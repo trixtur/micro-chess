@@ -1,0 +1,14 @@
+#summary One-sentence summary of this page.
+
+= Introduction =
+
+This page contains a project overview layout of MicroChess.
+
+
+= Details =
+
+Layout
+
+||||||Application Layer||
+||||||*Game Driver*||
+||UI||Board||Pieces||
