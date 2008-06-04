@@ -1,0 +1,2 @@
+I'm using Inkscape to make my SVGs (Scalable Vector Graphics),
+and the trolltech web site says that QSvgWidget was introduced into  Qt4.1
