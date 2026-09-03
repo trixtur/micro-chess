@@ -126,6 +126,16 @@ void microChess::handleSquare(int row, int column)
 		renderBoard();
 		return;
 	}
+	if (clicked.row == m_selected.row && clicked.column == m_selected.column) {
+		m_hasSelection = false;
+		renderBoard();
+		return;
+	}
+	if (piece && piece->GetColor() == m_board.currentTurn()) {
+		m_selected = clicked;
+		renderBoard();
+		return;
+	}
 	if (!m_board.move(m_selected, clicked)) {
 		statusBar()->showMessage(QString::fromStdString(m_board.lastError()));
 		return;
