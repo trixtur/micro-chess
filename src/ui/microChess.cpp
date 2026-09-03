@@ -1,8 +1,15 @@
 #include <QApplication>
 #include <QGridLayout>
+#include <QJsonDocument>
+#include <QJsonParseError>
+#include <QLocalServer>
+#include <QLocalSocket>
 #include <QMessageBox>
 #include <QPushButton>
 #include "microChess.h"
+#include "../game_api.h"
+
+namespace { constexpr auto serverName = "microchess"; }
 
 microChess::microChess(QMainWindow *parent)
 	: QMainWindow(parent)
@@ -26,8 +33,41 @@ microChess::microChess(QMainWindow *parent)
 	connect( actionE_xit, SIGNAL(triggered() ), this, SLOT(Exit()));
 	connect( action_About, SIGNAL(triggered() ), this, SLOT(About()));
 	connect( action_New, &QAction::triggered, this, &microChess::NewGame);
+	startApiServer();
 	renderBoard();
 
+}
+
+void microChess::startApiServer()
+{
+	QLocalServer::removeServer(QString::fromLatin1(serverName));
+	m_apiServer = new QLocalServer(this);
+	if (!m_apiServer->listen(QString::fromLatin1(serverName))) {
+		qWarning() << "event=api_server_failed error=" << m_apiServer->errorString();
+		return;
+	}
+	qInfo() << "event=api_server_listening name=" << serverName;
+	connect(m_apiServer, &QLocalServer::newConnection, this, [this] {
+		while (m_apiServer->hasPendingConnections()) {
+			auto *socket = m_apiServer->nextPendingConnection();
+			connect(socket, &QLocalSocket::readyRead, this, [this, socket] {
+				while (socket->canReadLine()) {
+					QJsonParseError parseError;
+					const QJsonDocument request = QJsonDocument::fromJson(socket->readLine(), &parseError);
+					QJsonObject response;
+					if (parseError.error != QJsonParseError::NoError || !request.isObject())
+						response = QJsonObject{{QStringLiteral("ok"), false}, {QStringLiteral("error"), QStringLiteral("expected one JSON object per line")}};
+					else
+						response = processGameCommand(m_board, request.object());
+					qInfo() << "event=api_command_processed status=" << response.value(QStringLiteral("status")).toString();
+					renderBoard();
+					socket->write(QJsonDocument(response).toJson(QJsonDocument::Compact) + '\n');
+					socket->flush();
+				}
+			});
+			connect(socket, &QLocalSocket::disconnected, socket, &QLocalSocket::deleteLater);
+		}
+	});
 }
 
 void microChess::NewGame()

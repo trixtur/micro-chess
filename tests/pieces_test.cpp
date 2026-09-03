@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "board.h"
+#include "game_api.h"
 #include "pieces.h"
 
 namespace {
@@ -72,4 +73,13 @@ int main()
     expect(stalemate.addPiece(king, black, {7, 7}), "black stalemate king can be placed");
     expect(stalemate.move({6, 4}, {6, 5}), "white can create stalemate");
     expect(stalemate.status() == GameStatus::Draw, "stalemate produces a draw");
+
+    ChessBoard apiBoard;
+    const QJsonObject apiResponse = processGameCommand(apiBoard, QJsonObject{
+        {QStringLiteral("command"), QStringLiteral("move")},
+        {QStringLiteral("from"), QJsonObject{{QStringLiteral("row"), 1}, {QStringLiteral("column"), 4}}},
+        {QStringLiteral("to"), QJsonObject{{QStringLiteral("row"), 3}, {QStringLiteral("column"), 4}}}
+    });
+    expect(apiResponse.value(QStringLiteral("ok")).toBool(), "API command moves a piece");
+    expect(apiBoard.pieceAt({3, 4}) != nullptr, "API command updates board state");
 }

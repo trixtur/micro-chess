@@ -47,7 +47,9 @@ build-tests/pieces_test
 
 `api/microchess_api.pro` builds a JSON-lines process for agents and other
 programs. Start it, then send one JSON command per line on standard input.
-Each command returns one JSON object on standard output.
+Each command returns one JSON object on standard output. If the Qt application
+is running, the API connects to its local IPC endpoint and controls the board
+shown in the window; otherwise it runs as an independent headless board.
 
 ```sh
 mkdir -p build-api

@@ -3,7 +3,7 @@ CONFIG += console c++17
 CONFIG -= app_bundle
 
 INCLUDEPATH += ../src
-SOURCES += pieces_test.cpp \
+SOURCES += pieces_test.cpp ../src/game_api.cpp \
            ../src/board.cpp \
            ../src/pieces.cpp ../src/pawn.cpp ../src/rook.cpp \
            ../src/knight.cpp ../src/queen.cpp ../src/king.cpp
