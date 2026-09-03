@@ -6,6 +6,7 @@
 #include <QLocalSocket>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QTimer>
 #include "microChess.h"
 #include "../game_api.h"
 
@@ -61,9 +62,9 @@ void microChess::startApiServer()
 						response = processGameCommand(m_board, request.object());
 					qInfo() << "event=api_command_processed status=" << response.value(QStringLiteral("status")).toString();
 					renderBoard();
-					announceGameOver();
 					socket->write(QJsonDocument(response).toJson(QJsonDocument::Compact) + '\n');
 					socket->flush();
+					QTimer::singleShot(0, this, &microChess::announceGameOver);
 				}
 			});
 			connect(socket, &QLocalSocket::disconnected, socket, &QLocalSocket::deleteLater);
@@ -92,10 +93,15 @@ void microChess::announceGameOver()
 		message = tr("Congratulations! Black wins by checkmate.");
 	else
 		message = tr("The game ends in a draw by stalemate.");
-	const auto answer = QMessageBox::question(this, tr("Game Over"), message + tr("\n\nStart a new game?"),
-	                                           QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
-	if (answer == QMessageBox::Yes)
-		NewGame();
+	auto *dialog = new QMessageBox(QMessageBox::Information, tr("Game Over"),
+	                               message + tr("\n\nStart a new game?"),
+	                               QMessageBox::Yes | QMessageBox::No, this);
+	dialog->setAttribute(Qt::WA_DeleteOnClose);
+	connect(dialog, &QMessageBox::finished, this, [this](int result) {
+		if (result == QMessageBox::Yes)
+			NewGame();
+	});
+	dialog->open();
 }
 
 QString microChess::pieceLabel(const Pieces *piece) const
