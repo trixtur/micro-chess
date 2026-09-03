@@ -61,6 +61,7 @@ void microChess::startApiServer()
 						response = processGameCommand(m_board, request.object());
 					qInfo() << "event=api_command_processed status=" << response.value(QStringLiteral("status")).toString();
 					renderBoard();
+					announceGameOver();
 					socket->write(QJsonDocument(response).toJson(QJsonDocument::Compact) + '\n');
 					socket->flush();
 				}
@@ -74,8 +75,27 @@ void microChess::NewGame()
 {
 	m_board.reset();
 	m_hasSelection = false;
+	m_gameOverAnnounced = false;
 	renderBoard();
 	statusBar()->showMessage(statusText());
+}
+
+void microChess::announceGameOver()
+{
+	if (m_gameOverAnnounced || m_board.status() == GameStatus::InProgress)
+		return;
+	m_gameOverAnnounced = true;
+	QString message;
+	if (m_board.status() == GameStatus::WhiteWon)
+		message = tr("Congratulations! White wins by checkmate.");
+	else if (m_board.status() == GameStatus::BlackWon)
+		message = tr("Congratulations! Black wins by checkmate.");
+	else
+		message = tr("The game ends in a draw by stalemate.");
+	const auto answer = QMessageBox::question(this, tr("Game Over"), message + tr("\n\nStart a new game?"),
+	                                           QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+	if (answer == QMessageBox::Yes)
+		NewGame();
 }
 
 QString microChess::pieceLabel(const Pieces *piece) const
@@ -142,6 +162,7 @@ void microChess::handleSquare(int row, int column)
 	}
 	m_hasSelection = false;
 	renderBoard();
+	announceGameOver();
 }
 
 void microChess::About()

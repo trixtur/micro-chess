@@ -26,6 +26,7 @@ private:
 	void handleSquare(int row, int column);
 	void renderBoard();
 	void startApiServer();
+	void announceGameOver();
 	QString pieceLabel(const Pieces *piece) const;
 	QString statusText() const;
 
@@ -33,6 +34,7 @@ private:
 	QPushButton *m_squares[8][8]{};
 	Position m_selected{-1, -1};
 	bool m_hasSelection = false;
+	bool m_gameOverAnnounced = false;
 	QLocalServer *m_apiServer = nullptr;
 };
 
