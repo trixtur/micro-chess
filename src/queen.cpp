@@ -21,19 +21,19 @@ Queen::~Queen()
 }
 
 int
-Queen::GetColor()	
+Queen::GetColor() const
 {
 	return m_color;
 }
 
 int
-Queen::GetType()
+Queen::GetType() const
 {
 	return m_type;
 }
 
 int
-Queen::GetMoves()
+Queen::GetMoves() const
 {
 	return m_moves;
 }

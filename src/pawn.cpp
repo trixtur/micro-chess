@@ -13,7 +13,6 @@ Pawn::Pawn( int color )
 	m_color = color;
 	m_type = pawn;
 	m_moves = 0;
-	m_moves = 0;
 }
 
 Pawn::~Pawn()
@@ -22,19 +21,19 @@ Pawn::~Pawn()
 }
 
 int
-Pawn::GetColor()	
+Pawn::GetColor() const
 {
 	return m_color;
 }
 
 int
-Pawn::GetType()
+Pawn::GetType() const
 {
 	return m_type;
 }
 
 int
-Pawn::GetMoves()
+Pawn::GetMoves() const
 {
 	return m_moves;
 }
@@ -48,13 +47,13 @@ Pawn::IncrementMoveCount()
 bool
 Pawn::IsValidMove( int currentX, int currentY, int newX, int newY )
 {
-	if(currentX > newX)
-		return false;
-	if((currentX + 2 == newX) && (m_moves == 0)  && (currentY == newY))
+	const int direction = m_color == white ? 1 : -1;
+	const int distance = newX - currentX;
+	if((distance == 2 * direction) && (m_moves == 0)  && (currentY == newY))
 		return true;
-	if((currentX + 1 == newX && currentY == newY))
+	if((distance == direction && currentY == newY))
 		return true;
-	if((currentX + 1 == newX) && (abs(currentY - newY) == 1 ))
+	if((distance == direction) && (abs(currentY - newY) == 1 ))
 		return true;
 	
 	return false;	

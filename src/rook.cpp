@@ -21,19 +21,19 @@ Rook::~Rook()
 }
 
 int
-Rook::GetColor()	
+Rook::GetColor() const
 {
 	return m_color;
 }
 
 int
-Rook::GetType()
+Rook::GetType() const
 {
 	return m_type;
 }
 
 int
-Rook::GetMoves()
+Rook::GetMoves() const
 {
 	return m_moves;
 }

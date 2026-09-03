@@ -26,3 +26,10 @@ jobs:
           qmake6 "$GITHUB_WORKSPACE/tests/pieces_test.pro" -o build-tests/Makefile
           make -C build-tests -j2
           build-tests/pieces_test
+      - name: Build API
+        run: |
+          export PATH="$(brew --prefix qt)/bin:$PATH"
+          mkdir build-api
+          qmake6 "$GITHUB_WORKSPACE/api/microchess_api.pro" -o build-api/Makefile
+          make -C build-api -j2
+          printf '%s\n' '{"command":"state"}' | build-api/microchess_api

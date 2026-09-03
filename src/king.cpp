@@ -21,19 +21,19 @@ King::~King()
 }
 
 int
-King::GetColor()	
+King::GetColor() const
 {
 	return m_color;
 }
 
 int
-King::GetType()
+King::GetType() const
 {
 	return m_type;
 }
 
 int
-King::GetMoves()
+King::GetMoves() const
 {
 	return m_moves;
 }
@@ -50,7 +50,6 @@ King::IncrementMoveCount()
 {
 	m_moves++;
 }
-
 
 
 

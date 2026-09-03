@@ -21,19 +21,19 @@ Knight::~Knight()
 }
 
 int
-Knight::GetColor()	
+Knight::GetColor() const
 {
 	return m_color;
 }
 
 int
-Knight::GetType()
+Knight::GetType() const
 {
 	return m_type;
 }
 
 int
-Knight::GetMoves()
+Knight::GetMoves() const
 {
 	return m_moves;
 }
@@ -51,4 +51,3 @@ Knight::IsValidMove( int currentX, int currentY, int newX, int newY )
 	const int dy = abs(currentY - newY);
 	return (dx == 2 && dy == 1) || (dx == 1 && dy == 2);
 }
-
