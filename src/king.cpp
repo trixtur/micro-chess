@@ -11,7 +11,8 @@ using namespace std;
 King::King( int color )
 {
 	m_color = color;
-	m_type = pawn;
+	m_type = king;
+	m_moves = 0;
 }
 
 King::~King()
@@ -20,19 +21,19 @@ King::~King()
 }
 
 int
-King::GetColor()	
+King::GetColor() const
 {
 	return m_color;
 }
 
 int
-King::GetType()
+King::GetType() const
 {
 	return m_type;
 }
 
 int
-King::GetMoves()
+King::GetMoves() const
 {
 	return m_moves;
 }
@@ -40,12 +41,15 @@ King::GetMoves()
 bool
 King::IsValidMove( int currentX, int currentY, int newX, int newY )
 {
-	if( abs(currentX - newX) <= 1 && abs(currentY - newY) <= 1)
-		return true;
-	return false;
+	return (currentX != newX || currentY != newY) &&
+	       abs(currentX - newX) <= 1 && abs(currentY - newY) <= 1;
 }
 
-
+void
+King::IncrementMoveCount()
+{
+	m_moves++;
+}
 
 
 

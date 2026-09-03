@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build-and-test:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Qt
+        run: brew install qt
+      - name: Build application
+        run: |
+          export PATH="$(brew --prefix qt)/bin:$PATH"
+          mkdir build-app
+          qmake6 "$GITHUB_WORKSPACE/src/ui/microChess.pro" -o build-app/Makefile
+          make -C build-app -j2
+      - name: Build and run engine tests
+        run: |
+          export PATH="$(brew --prefix qt)/bin:$PATH"
+          mkdir build-tests
+          qmake6 "$GITHUB_WORKSPACE/tests/pieces_test.pro" -o build-tests/Makefile
+          make -C build-tests -j2
+          build-tests/pieces_test
+      - name: Build API
+        run: |
+          export PATH="$(brew --prefix qt)/bin:$PATH"
+          mkdir build-api
+          qmake6 "$GITHUB_WORKSPACE/api/microchess_api.pro" -o build-api/Makefile
+          make -C build-api -j2
+          printf '%s\n' '{"command":"state"}' | build-api/microchess_api

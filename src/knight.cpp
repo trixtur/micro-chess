@@ -11,7 +11,8 @@ using namespace std;
 Knight::Knight( int color )
 {
 	m_color = color;
-	m_type = pawn;
+	m_type = knight;
+	m_moves = 0;
 }
 
 Knight::~Knight()
@@ -20,19 +21,19 @@ Knight::~Knight()
 }
 
 int
-Knight::GetColor()	
+Knight::GetColor() const
 {
 	return m_color;
 }
 
 int
-Knight::GetType()
+Knight::GetType() const
 {
 	return m_type;
 }
 
 int
-Knight::GetMoves()
+Knight::GetMoves() const
 {
 	return m_moves;
 }
@@ -46,12 +47,7 @@ Knight::IncrementMoveCount()
 bool
 Knight::IsValidMove( int currentX, int currentY, int newX, int newY )
 {
-	if(abs(currentX - newX) == 2*(abs(currentY - newY)))
-		return true;
-	if(2*(abs(currentX - newX)) == abs(currentY - newY))
-		return true;
-	
-	return false;
+	const int dx = abs(currentX - newX);
+	const int dy = abs(currentY - newY);
+	return (dx == 2 && dy == 1) || (dx == 1 && dy == 2);
 }
-
-

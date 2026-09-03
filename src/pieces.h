@@ -15,9 +15,9 @@ class Pieces
 	Pieces();
 	virtual ~Pieces();
 	virtual bool IsValidMove( int currentX, int currentY, int newX, int newY ) = 0;
-	virtual int GetMoves() = 0;
-	virtual int GetType() = 0;
-	virtual int GetColor() = 0;
+	virtual int GetMoves() const = 0;
+	virtual int GetType() const = 0;
+	virtual int GetColor() const = 0;
 	virtual void IncrementMoveCount() = 0;
        
     private:
@@ -30,9 +30,9 @@ class Pawn : virtual public Pieces
 		Pawn( int color );
 		~Pawn();
 		bool IsValidMove( int currentX, int currentY, int newX, int newY );
-		int GetMoves();
-		int GetType();
-		int GetColor();
+		int GetMoves() const;
+		int GetType() const;
+		int GetColor() const;
 		void IncrementMoveCount();
 	
     private:
@@ -48,9 +48,9 @@ class Rook : virtual public Pieces
 		Rook( int color );
 		~Rook();
 		bool IsValidMove( int currentX, int currentY, int newX, int newY );
-		int GetMoves();
-		int GetType();
-		int GetColor();
+		int GetMoves() const;
+		int GetType() const;
+		int GetColor() const;
 		void IncrementMoveCount();
 	
     private:
@@ -66,9 +66,9 @@ class Knight : virtual public Pieces
 		Knight( int color );
 		~Knight();
 		bool IsValidMove( int currentX, int currentY, int newX, int newY );
-		int GetMoves();
-		int GetType();
-		int GetColor();
+		int GetMoves() const;
+		int GetType() const;
+		int GetColor() const;
 		void IncrementMoveCount();
 	
     private:
@@ -84,9 +84,9 @@ class Bishop : virtual public Pieces
 		Bishop( int color );
 		~Bishop();
 		bool IsValidMove( int currentX, int currentY, int newX, int newY );
-		int GetMoves();
-		int GetType();
-		int GetColor();
+		int GetMoves() const;
+		int GetType() const;
+		int GetColor() const;
 		void IncrementMoveCount();
 	
     private:
@@ -101,9 +101,9 @@ class Queen : virtual public Pieces
 		Queen( int color );
 		~Queen();
 		bool IsValidMove( int currentX, int currentY, int newX, int newY );
-		int GetMoves();
-		int GetType();
-		int GetColor();
+		int GetMoves() const;
+		int GetType() const;
+		int GetColor() const;
 		void IncrementMoveCount();
 	
     private:
@@ -119,9 +119,9 @@ class King : virtual public Pieces
 		King( int color );
 		~King();
 		bool IsValidMove( int currentX, int currentY, int newX, int newY );
-		int GetMoves();
-		int GetType();
-		int GetColor();
+		int GetMoves() const;
+		int GetType() const;
+		int GetColor() const;
 		void IncrementMoveCount();
 	
     private:
@@ -132,4 +132,3 @@ class King : virtual public Pieces
 };
 
 #endif	/* _PIECES_H */
-

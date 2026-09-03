@@ -11,7 +11,8 @@ using namespace std;
 Rook::Rook( int color )
 {
 	m_color = color;
-	m_type = pawn;
+	m_type = rook;
+	m_moves = 0;
 }
 
 Rook::~Rook()
@@ -20,19 +21,19 @@ Rook::~Rook()
 }
 
 int
-Rook::GetColor()	
+Rook::GetColor() const
 {
 	return m_color;
 }
 
 int
-Rook::GetType()
+Rook::GetType() const
 {
 	return m_type;
 }
 
 int
-Rook::GetMoves()
+Rook::GetMoves() const
 {
 	return m_moves;
 }
@@ -46,7 +47,7 @@ Rook::IncrementMoveCount()
 bool
 Rook::IsValidMove( int currentX, int currentY, int newX, int newY )
 {
-	if(currentX == newX || currentY == newY)
+	if((currentX != newX || currentY != newY) && (currentX == newX || currentY == newY))
 		return true;
 	return false;
 }
