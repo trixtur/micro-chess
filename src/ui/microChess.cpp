@@ -1,7 +1,9 @@
-#include <QtGui>
+#include <QApplication>
+#include <QMessageBox>
 #include "microChess.h"
 
 microChess::microChess(QMainWindow *parent)
+    : QMainWindow(parent)
 {
 	setupUi(this);	//this sets up the GUI
 

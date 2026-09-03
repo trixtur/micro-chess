@@ -12,6 +12,8 @@ Pawn::Pawn( int color )
 {
 	m_color = color;
 	m_type = pawn;
+	m_moves = 0;
+	m_moves = 0;
 }
 
 Pawn::~Pawn()
@@ -46,7 +48,7 @@ Pawn::IncrementMoveCount()
 bool
 Pawn::IsValidMove( int currentX, int currentY, int newX, int newY )
 {
-	if(currentX < newX)
+	if(currentX > newX)
 		return false;
 	if((currentX + 2 == newX) && (m_moves == 0)  && (currentY == newY))
 		return true;

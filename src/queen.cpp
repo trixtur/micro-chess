@@ -11,7 +11,8 @@ using namespace std;
 Queen::Queen( int color )
 {
 	m_color = color;
-	m_type = pawn;
+	m_type = queen;
+	m_moves = 0;
 }
 
 Queen::~Queen()
@@ -46,7 +47,7 @@ Queen::IncrementMoveCount()
 bool
 Queen::IsValidMove( int currentX, int currentY, int newX, int newY )
 {
-	if((currentX == newX) || (currentY == newY))
+	if((currentX != newX || currentY != newY) && ((currentX == newX) || (currentY == newY)))
 		return true;
 	if(abs(currentX - newX) == abs(currentY - newY))
 		return true;
